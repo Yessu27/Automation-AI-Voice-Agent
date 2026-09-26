@@ -1,0 +1,159 @@
+{
+"name": "Agente de VOZ",
+"nodes": [
+{
+"parameters": {},
+"type": "n8n-nodes-base.manualTrigger",
+"typeVersion": 1,
+"position": [
+0,
+0
+],
+"id": "82f75346-439e-459b-ad7f-478cec875a7e",
+"name": "When clicking ‘Execute workflow’"
+},
+{
+"parameters": {
+"documentId": {
+"__rl": true,
+"value": "YOUR_GOOGLE_SHEETS_DOCUMENT_ID",
+"mode": "list",
+"cachedResultName": "YOUR_SPREADSHEET_NAME",
+"cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_DOCUMENT_ID/edit?usp=drivesdk"
+},
+"sheetName": {
+"__rl": true,
+"value": "gid=0",
+"mode": "list",
+"cachedResultName": "Folha1",
+"cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_DOCUMENT_ID/edit#gid=0"
+},
+"options": {}
+},
+"type": "n8n-nodes-base.googleSheets",
+"typeVersion": 4.7,
+"position": [
+224,
+0
+],
+"id": "eaff7945-3ffa-433b-87fa-6fd285a8b642",
+"name": "Get row(s) in sheet",
+"credentials": {
+"googleSheetsOAuth2Api": {
+"id": "YOUR_CREDENTIALS_ID",
+"name": "Google Sheets account"
+}
+}
+},
+{
+"parameters": {
+"method": "POST",
+"url": "https://api.retellai.com/v2/create-phone-call",
+"sendHeaders": true,
+"headerParameters": {
+"parameters": [
+{
+"name": "Authorization",
+"value": "Bearer YOUR_RETELL_API_KEY"
+}
+]
+},
+"sendBody": true,
+"specifyBody": "json",
+"jsonBody": "{\n  "from_number": "+10000000000",\n  "to_number": "+351000000000",\n  "override_agent_id": "YOUR_RETELL_AGENT_ID",\n  "retell_llm_dynamic_variables": {\n    "nome": "CLIENT_NAME_PLACEHOLDER",\n    "email": "client_email@example.com",\n    "datadaultimavisita": "DD/MM/YYYY",\n    "detalhes": "cliente tem intencao de comprar um apartamento em santarem"\n  }\n}",
+"options": {}
+},
+"type": "n8n-nodes-base.httpRequest",
+"typeVersion": 4.5,
+"position": [
+448,
+0
+],
+"id": "b9e53288-9637-4463-ae94-247456bb5fae",
+"name": "HTTP Request"
+},
+{
+"parameters": {
+"content": "O gatilho para o clique de arranque do fluxo.",
+"height": 384,
+"color": 4
+},
+"type": "n8n-nodes-base.stickyNote",
+"position": [
+-80,
+-128
+],
+"typeVersion": 1,
+"id": "20cad09c-3a5b-4957-8e44-618ced20862f",
+"name": "Sticky Note"
+},
+{
+"parameters": {
+"content": "Este é o nosso CRM onde vai constar dados dos clientes que já tiveram um primeiro encontro com a agência",
+"height": 384,
+"color": 3
+},
+"type": "n8n-nodes-base.stickyNote",
+"position": [
+176,
+-128
+],
+"typeVersion": 1,
+"id": "e07a1081-be66-44f2-92d4-595ec67c9b27",
+"name": "Sticky Note1"
+},
+{
+"parameters": {
+"content": "Aqui fizemos quase toda configuração que está interligado com o Retell, e o Call.com para o agendamento. ",
+"height": 448,
+"color": 6
+},
+"type": "n8n-nodes-base.stickyNote",
+"position": [
+432,
+-192
+],
+"typeVersion": 1,
+"id": "b5013d01-311c-4324-8012-e6458f49ef21",
+"name": "Sticky Note2"
+}
+],
+"pinData": {},
+"connections": {
+"When clicking ‘Execute workflow’": {
+"main": [
+[
+{
+"node": "Get row(s) in sheet",
+"type": "main",
+"index": 0
+}
+]
+]
+},
+"Get row(s) in sheet": {
+"main": [
+[
+{
+"node": "HTTP Request",
+"type": "main",
+"index": 0
+}
+]
+]
+}
+},
+"active": false,
+"settings": {
+"executionOrder": "v1",
+"binaryMode": "separate"
+},
+"versionId": "YOUR_VERSION_ID",
+"meta": {
+"templateCredsSetupCompleted": true,
+"instanceId": "YOUR_INSTANCE_ID"
+},
+"nodeGroups": [],
+"id": "YOUR_WORKFLOW_ID",
+"tags": []
+}
